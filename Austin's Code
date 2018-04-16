@@ -12,17 +12,17 @@ struct structure_type1
 	float array[30][30];
 };
 
-
+void choice(void);
 struct structure_type1 loader(void);   //first function declared 
 
 int main(void) {
 	struct structure_type1 data;
 	data=loader();
-	printf("%d %d", data.size[0], data.size[1]);
+	choice();
 	system("pause");
 }
 
-struct structure_type1 loader(void) {
+struct structure_type1 loader(void) {       //function a
 	struct structure_type1 data;  //this structure type is given to the varible data
 	FILE *file;
 	char name[30];
@@ -30,13 +30,45 @@ struct structure_type1 loader(void) {
 	printf("Enter the name of the data to load: ");
 	scanf(" %s", &name);     //name of file set to variable "name"
 	file = fopen(name,"r");  //pointer uses "name" given by user
-	fscanf(file, "%d %d",&data.size[0], &data.size[1]);
+	fscanf(file, "%d %d",&data.size[0], &data.size[1]);     //row and cols scaned and assigned to data.size[]
 
 	for (j = 0; j < data.size[0]; j++) {
-		for (i = 0; i < data.size[1]; i++) {
+		for (i = 0; i < data.size[1]; i++) {        //scan out the matrix into data.array[][]
 			fscanf(file, "%f", &data.array[j][i]);
 		}
 	}
 	fclose(file);
 	return data;
+}
+
+void choice(void) { //function b
+	char will;
+	printf("\n\		Enter A to add two matrices\n\
+		Enter S to subtract two matrices\n\
+		Enter M to multiply two matrices\n\
+		Enter E to multiply the element by elements of two matrices\n\
+		Enter Q to quit\n");
+	printf("Please enter a choice: ");
+	scanf(" %c", &will);
+	will = toupper(will);
+	switch (will)
+	{
+	case 'A': 
+		printf("Add matrices");
+		break;
+	case 'S':
+		printf("Subtract matrices");
+		break;
+	case 'M':
+		printf("Multiply matrices");
+		break;
+	case 'E':
+		printf("Multiply element by matrices");
+		break;
+	case 'Q':
+		printf("Quit");
+		break;
+
+	}
+
 }
