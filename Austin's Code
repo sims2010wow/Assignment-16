@@ -1,0 +1,42 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <ctype.h>
+#include <string.h>
+
+
+struct structure_type1
+{  //A structure type is defined that has categories for the size of the matrix (row and col) and the matrix
+	int size[2];
+	float array[30][30];
+};
+
+
+struct structure_type1 loader(void);   //first function declared 
+
+int main(void) {
+	struct structure_type1 data;
+	data=loader();
+	printf("%d %d", data.size[0], data.size[1]);
+	system("pause");
+}
+
+struct structure_type1 loader(void) {
+	struct structure_type1 data;  //this structure type is given to the varible data
+	FILE *file;
+	char name[30];
+	int i,j;
+	printf("Enter the name of the data to load: ");
+	scanf(" %s", &name);     //name of file set to variable "name"
+	file = fopen(name,"r");  //pointer uses "name" given by user
+	fscanf(file, "%d %d",&data.size[0], &data.size[1]);
+
+	for (j = 0; j < data.size[0]; j++) {
+		for (i = 0; i < data.size[1]; i++) {
+			fscanf(file, "%f", &data.array[j][i]);
+		}
+	}
+	fclose(file);
+	return data;
+}
