@@ -12,13 +12,17 @@ struct structure_type1
 	float array[30][30];
 };
 
-void choice(void);
+char choice(void);
 struct structure_type1 loader(void);   //first function declared 
 
 int main(void) {
 	struct structure_type1 data;
-	data=loader();
-	choice();
+	char will;
+	data=loader();  //load data function
+	will=choice();  //user choice of operation 
+	
+
+	printf("\n");
 	system("pause");
 }
 
@@ -41,34 +45,42 @@ struct structure_type1 loader(void) {       //function a
 	return data;
 }
 
-void choice(void) { //function b
+char choice(void) { //function b
+	int test;
 	char will;
+	//menu for user
 	printf("\n\		Enter A to add two matrices\n\
 		Enter S to subtract two matrices\n\
 		Enter M to multiply two matrices\n\
 		Enter E to multiply the element by elements of two matrices\n\
 		Enter Q to quit\n");
-	printf("Please enter a choice: ");
-	scanf(" %c", &will);
-	will = toupper(will);
-	switch (will)
+	do   //user choice with error check 
 	{
-	case 'A': 
-		printf("Add matrices");
-		break;
-	case 'S':
-		printf("Subtract matrices");
-		break;
-	case 'M':
-		printf("Multiply matrices");
-		break;
-	case 'E':
-		printf("Multiply element by matrices");
-		break;
-	case 'Q':
-		printf("Quit");
-		break;
-
-	}
-
+		printf("Please enter a choice: ");
+		scanf(" %c", &will);
+		will = toupper(will);
+		test = 0;
+		switch (will)
+		{
+		case 'A':
+			printf("Add matrices");
+			break;
+		case 'S':
+			printf("Subtract matrices");
+			break;
+		case 'M':
+			printf("Multiply matrices");
+			break;
+		case 'E':
+			printf("Multiply element by matrices");
+			break;
+		case 'Q':
+			printf("Quit");
+			break;
+		default:
+			printf("Bad input");
+			test = 1337;   //if test=1337 then loop do while untill good input
+		}
+	} while (test == 1337);
+	return will;
 }
