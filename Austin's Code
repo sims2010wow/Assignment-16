@@ -13,43 +13,63 @@ struct structure_type1
 };
 
 
-struct structure_type1 loader(void);   //first a
-char choice(void);          //function b
-struct structure_type1 add(struct structure_type1 data1, struct structure_type1 data2);       //function c
-											//function d
-struct structure_type1 multiply(struct structure_type1 data1, struct structure_type1 data2);	//function e
-struct structure_type1 multiply_element(struct structure_type1 data1, struct structure_type1 data2); //function f
-void display(struct structure_type1 data1, struct structure_type1 data2, struct structure_type1 data3,char will); //function g
+struct structure_type1 loader(void);//first a  (load)
+char choice(void);//function b (operation choice)
+struct structure_type1 add(struct structure_type1 data1, struct structure_type1 data2);//function c (add)
+struct structure_type1 subtract(struct structure_type1 data1, struct structure_type1 data2);//function d (subtract)
+struct structure_type1 multiply(struct structure_type1 data1, struct structure_type1 data2);//function e (multiply)
+struct structure_type1 multiply_element(struct structure_type1 data1, struct structure_type1 data2); //function f (multiply by elements)
+void display(struct structure_type1 data1, struct structure_type1 data2, struct structure_type1 data3,char will); //function g (print to screen)
+void print_file(struct structure_type1 data1, struct structure_type1 data2, struct structure_type1 data3, char will); //function h (print to file)
 
 
 int main(void) {
 	struct structure_type1 data1,data2,data3;
 	char will;
-	data1=loader();  //load first matrix
-	data2 = loader(); //load second matrix
-	will=choice();  //user choice of operation 
-	switch (will)
-	{
-	case 'A':
-		data3=add(data1,data2);
-		break;
-	case 'S':
-		break;
-	case 'M':
-		data3=multiply(data1, data2);
-		break;
-	case 'E':
-		break;
-	case 'Q':
-		break;
-	}
-	
-	display(data1, data2, data3, will);
-	printf("\n");
-	system("pause");
+	int will1,will2;
+	printf("Welcome to WeAreSoftware Matrix Shop. Load in two matrix files and preform operations like: Add,Subtract,Multiply,or Multiply Element by Element\n");
+	printf("\nL01 Authors:Austin Sims,Valeria Tupac,Gabby Peal\n\n");
+	do {
+		data1 = loader();  //load first matrix
+		data2 = loader(); //load second matrix
+		do {
+			will = choice();  //user choice of operation 
+			switch (will)
+			{
+			case 'A':
+				data3 = add(data1, data2);
+				break;
+			case 'S':
+				data3 = subtract(data1, data2);
+				break;
+			case 'M':
+				data3 = multiply(data1, data2);
+				break;
+			case 'E':
+				data3 = multiply_element(data1, data2);
+				break;
+			case 'Q':
+				break;
+			}
+
+			switch (will)
+			{
+			case 'Q':
+				break;
+			default:
+				display(data1, data2, data3, will);
+				print_file(data1, data2, data3, will);
+
+			}
+			printf("\nDo you want to preform another operation with these same matrices? 1 for yes 0 for no:  ");
+			scanf(" %d", &will1);
+		} while (will1 == 1);
+		printf("\nDo you want to load in two new matrices? 1 for yes 0 for no:  ");
+		scanf(" %d", &will2);
+	} while (will2 == 1);
 }
 
-struct structure_type1 loader(void) {       //function a
+struct structure_type1 loader(void) {//function a (load)
 	struct structure_type1 data;  //this structure type is given to the varible data
 	FILE *file;
 	char name[30];
@@ -68,7 +88,7 @@ struct structure_type1 loader(void) {       //function a
 	return data;
 }
 
-char choice(void) { //function b
+char choice(void) { //function b (operation choice)
 	int test;
 	char will;
 	//menu for user
@@ -104,13 +124,43 @@ char choice(void) { //function b
 	return will;
 }
 
-struct structure_type1 add(struct structure_type1 data1, struct structure_type1 data2) {       //function c
-	struct structure_type1 data3;
-	return data1;
+struct structure_type1 add(struct structure_type1 data1, struct structure_type1 data2) {  //function c (add)
+	struct structure_type1 data3;  //result is data3
+	int i, j;
+	if (data1.size[0] != data2.size[0] || data1.size[1] != data2.size[1]) {
+		printf("\nMatrix Dimensions Do Not Allow Addition"); //dimensions do not match
+	}
+	else {
+		data3.size[0] = data1.size[0];      //define the size of the answer as the same as the things we added
+		data3.size[1] = data1.size[1];
+
+		for (i = 0; i < data3.size[0]; i++) {
+			for (j = 0; j < data3.size[1]; j++)
+				data3.array[i][j] = data1.array[i][j] + data2.array[i][j];
+		}
+	}
+	return data3;
 }
 
+struct structure_type1 subtract(struct structure_type1 data1, struct structure_type1 data2) { //function d (subtract)
+	struct structure_type1 data3;  //result is data3
+	int i, j;
+	if (data1.size[0] != data2.size[0] || data1.size[1] != data2.size[1]) {
+		printf("\nMatrix Dimensions Do Not Allow Subtraction"); //dimensions do not match
+	}
+	else {
+		data3.size[0] = data1.size[0];      //define the size of the answer as the same as the things we subtracted
+		data3.size[1] = data1.size[1];
 
-struct structure_type1 multiply(struct structure_type1 data1, struct structure_type1 data2) { //function e
+		for (i = 0; i < data3.size[0]; i++) {
+			for (j = 0; j < data3.size[1]; j++)
+				data3.array[i][j] = data1.array[i][j] - data2.array[i][j];
+		}
+	}
+	return data3;
+}
+
+struct structure_type1 multiply(struct structure_type1 data1, struct structure_type1 data2) { //function e (multiply)
 	struct structure_type1 data3;  //result is data3
 	int k,q,g;
 	float sum=0;
@@ -121,39 +171,63 @@ struct structure_type1 multiply(struct structure_type1 data1, struct structure_t
 	else{
 		data3.size[0] = data1.size[0];      //if matrixcies can be multiplied we define the size of the answer
 		data3.size[1] = data2.size[1];
-	}
 
-	for (q = 0; q < data1.size[0]; q++) {     //with these loops we define the result term by term
-	for (g = 0; g < data2.size[1]; g++) {
-			for (k = 0; k < data1.size[1]; k++) {
-				sum = sum + data1.array[q][k] * data2.array[k][g];
+		for (q = 0; q < data1.size[0]; q++) {     //with these loops we define the result term by term
+			for (g = 0; g < data2.size[1]; g++) {
+				for (k = 0; k < data1.size[1]; k++) {
+					sum = sum + data1.array[q][k] * data2.array[k][g];
+				}
+				data3.array[q][g] = sum;
+				sum = 0;
+
 			}
-			data3.array[q][g] = sum;
-			sum = 0;
+			g = 0;
+		}
+	}
 
-	}
-	g = 0;
-	}
+	
 		
 	return data3;
 }
 
+struct structure_type1 multiply_element(struct structure_type1 data1, struct structure_type1 data2) {//function f (multiply by elements)
+	struct structure_type1 data3;  //result is data3
+	int i, j;
+
+	if (data1.size[0] != data2.size[0] || data1.size[1] != data2.size[1]) {
+		printf("\nMatrix Dimensions Do Not Allow Element by Element Multiplication"); //dimensions do not match
+	}
+	else {
+		data3.size[0] = data1.size[0];      //define the size of the answer as the same as the things we multiplied by element
+		data3.size[1] = data1.size[1];
+
+		for (i = 0; i < data3.size[0]; i++) {
+			for (j = 0; j < data3.size[1]; j++)
+				data3.array[i][j] = data1.array[i][j] * data2.array[i][j];
+		}
+	}
+	return data3;
+}
+
+
+
+
 void display(struct structure_type1 data1, struct structure_type1 data2, struct structure_type1 data3, char will) { //function g
-	char operation[15];
+	char operation[30];
 	int i,j;
 	switch (will) //which operation was used?
 	{
 	case 'A':
-		printf("Add matrices");
+		strcpy(operation, "Add");
 		break;
 	case 'S':
-		printf("Subtract matrices");
+		strcpy(operation, "Subtract");
 		break;
 	case 'M':
-		strcpy(operation, "multiply");
+		strcpy(operation, "Multiply");
 		break;
 	case 'E':
-		printf("Multiply element by matrices");
+		strcpy(operation, "Multiply by Elements");
 	}
 
 	//print matrix 1
@@ -182,4 +256,60 @@ void display(struct structure_type1 data1, struct structure_type1 data2, struct 
 		}
 		printf("\n");
 	}
+}
+
+void print_file(struct structure_type1 data1, struct structure_type1 data2, struct structure_type1 data3, char will) { //function h
+	FILE *pointer;
+	int i, j;
+	char name[30], operation[30];
+	printf("\n\n Provide a filename for these results to be printed to with file extension: ");
+	scanf(" %s", &name);
+
+	switch (will) //which operation was used?
+	{
+	case 'A':
+		strcpy(operation, "Add");
+		break;
+	case 'S':
+		strcpy(operation, "Subtract");
+		break;
+	case 'M':
+		strcpy(operation, "Multiply");
+		break;
+	case 'E':
+		strcpy(operation, "Multiply by Elements");
+	}
+
+	pointer = fopen(name, "w");
+	//print matrix 1
+	fprintf(pointer,"\nThe first matrix is: \n");
+	for (i = 0; i < data1.size[0]; i++) {
+		for (j = 0; j < data1.size[1]; j++) {
+			fprintf(pointer,"%5.3f\t", data1.array[i][j]);
+		}
+		fprintf(pointer,"\n");
+	}
+
+	//print matrix 2
+	fprintf(pointer,"\nThe second matrix is: \n");
+	for (i = 0; i < data2.size[0]; i++) {
+		for (j = 0; j < data2.size[1]; j++) {
+			fprintf(pointer,"%5.3f\t", data2.array[i][j]);
+		}
+		fprintf(pointer,"\n");
+	}
+
+	//state operation and print resulting matrix
+	fprintf(pointer,"\nYou chose the operation of %s. The resulting matrix is: \n", operation);
+	for (i = 0; i < data3.size[0]; i++) {
+		for (j = 0; j < data3.size[1]; j++) {
+			fprintf(pointer,"%5.3f\t", data3.array[i][j]);
+		}
+		fprintf(pointer,"\n");
+	}
+
+
+
+	fclose(pointer);
+
 }
