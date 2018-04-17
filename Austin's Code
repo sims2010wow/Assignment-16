@@ -18,6 +18,8 @@ char choice(void);          //function b
 struct structure_type1 add(struct structure_type1 data1, struct structure_type1 data2);       //function c
 											//function d
 struct structure_type1 multiply(struct structure_type1 data1, struct structure_type1 data2);	//function e
+struct structure_type1 multiply_element(struct structure_type1 data1, struct structure_type1 data2); //function f
+void display(struct structure_type1 data1, struct structure_type1 data2, struct structure_type1 data3,char will); //function g
 
 
 int main(void) {
@@ -42,8 +44,7 @@ int main(void) {
 		break;
 	}
 	
-	printf("\nrow=%d col=%d", data3.size[0], data3.size[1]);
-	printf("\n%.2f %.2f\n%.2f %.2f", data3.array[0][0], data3.array[0][1], data3.array[1][0], data3.array[1][1]);
+	display(data1, data2, data3, will);
 	printf("\n");
 	system("pause");
 }
@@ -75,7 +76,7 @@ char choice(void) { //function b
 		Enter S to subtract two matrices\n\
 		Enter M to multiply two matrices\n\
 		Enter E to multiply the element by elements of two matrices\n\
-		Enter Q to quit\n");
+		Enter Q to quit\n\n");
 	do   //user choice with error check 
 	{
 		printf("Please enter a choice: ");
@@ -85,16 +86,12 @@ char choice(void) { //function b
 		switch (will)
 		{
 		case 'A':
-			printf("Add matrices");
 			break;
 		case 'S':
-			printf("Subtract matrices");
 			break;
 		case 'M':
-			printf("Multiply matrices");
 			break;
 		case 'E':
-			printf("Multiply element by matrices");
 			break;
 		case 'Q':
 			printf("Quit");
@@ -140,4 +137,49 @@ struct structure_type1 multiply(struct structure_type1 data1, struct structure_t
 		
 	return data3;
 }
+
+void display(struct structure_type1 data1, struct structure_type1 data2, struct structure_type1 data3, char will) { //function g
+	char operation[15];
+	int i,j;
+	switch (will) //which operation was used?
+	{
+	case 'A':
+		printf("Add matrices");
+		break;
+	case 'S':
+		printf("Subtract matrices");
+		break;
+	case 'M':
+		strcpy(operation, "multiply");
+		break;
+	case 'E':
+		printf("Multiply element by matrices");
+	}
+
+	//print matrix 1
+	printf("\nThe first matrix is: \n");
+	for (i = 0; i < data1.size[0]; i++) {
+		for (j = 0; j < data1.size[1]; j++) {
+			printf("%5.3f\t", data1.array[i][j]);
+		}
+		printf("\n");
+	}
+
+	//print matrix 2
+	printf("\nThe second matrix is: \n");
+	for (i = 0; i < data2.size[0]; i++) {
+		for (j = 0; j < data2.size[1]; j++) {
+			printf("%5.3f\t", data2.array[i][j]);
+		}
+		printf("\n");
+	}
+
+	//state operation and print resulting matrix
+	printf("\nYou chose the operation of %s. The resulting matrix is: \n",operation);
+	for (i = 0; i < data3.size[0]; i++) {
+		for (j = 0; j < data3.size[1]; j++) {
+			printf("%5.3f\t", data3.array[i][j]);
+		}
+		printf("\n");
+	}
 }
